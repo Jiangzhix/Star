@@ -1,34 +1,43 @@
-var canvas;
-var stars_count;
-var stars;
+var starCount = 1500;
+var starArr = new Array();
 
-ini();
-SummonStars();
-
-var interval = setInterval(function(){drawStars();},50);
-
-// 初始化
-function ini() {
-    canvas = document.getElementById("Star_background");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    context = canvas.getContext("2d")
-    stars = Array();
-    stars_count = 50;
-    clearInterval(interval);
-}
-
-// 生成星星
-function SummonStars() {
-    for(var i = 0 ; i < stars_count ; i++) {
-        let x = Math.random() * canvas.offsetWidth;
-        let y = Math.random() * canvas.offsetHeight;
-        let radius = Math.random() * 0.8;
-        let color = "rgba(255,255,255)"
-        let speed = Math.random() * 0.5
-        let arr = {'x':x,'y':y,'radius':radius,'color':color,'speed':speed}
+var Star = function () {
+    this.x = windowWidth * Math.random();
+    this.y = 5000 * Math.random();
+    this.text = ".";
+    this.color = "white";
+    this.randomColor = function () {
+        var _r = Math.random();
+        if (_r < 0.5) {
+            this.color = "#333";
+        } else {
+            this.color = "white";
+        }
     }
 }
 
+window.onload = function () {
+    var starsE = document.getElementById("stars");
+    windowWidth = window.innerWidth;
+    starsE.width = windowWidth;
+    starsE.height = window.innerHeight;
+    context = starsE.getContext("2d");
 
-var starbg = document.getElementById("Star_background")
+    for (var i = 0; i < starCount; i++) {
+        var star = new Star();
+        star.randomColor();
+        starArr.push(star);
+    }
+
+    showStars();
+}
+
+function showStars() {
+    for (var n = 0; n < starCount; n++) {
+        starArr[n].randomColor();
+        context.fillStyle = starArr[n].color;
+        context.fillText(starArr[n].text, starArr[n].x, starArr[n].y);
+    }
+
+    setTimeout("showStars()", 100);
+}
